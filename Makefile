@@ -14,6 +14,7 @@ JAR_FLAGS=
 DEBUG=0
 PREFIX=/usr
 BINDIR=/bin
+DATADIR=/share
 
 JAVAC=javac7
 DEFUALT_JAVAC=javac
@@ -25,6 +26,7 @@ RM_R=$(RM) -r
 UNLINK=unlink
 INSTALL=install
 INSTALL_M755=$(INSTALL) -m 755
+INSTALL_M644=$(INSTALL) -m 644
 MKDIR=mkdir
 MKDIR_P=mkdir -p
 JPP=jpp
@@ -40,7 +42,7 @@ all: jpp debug javac jar
 
 
 jpp:
-	if [ ! -d "bin" ]; then  $(MKDIR) "bin"  ; fi
+	if [ ! -d "bin" ]; then  $(MKDIR) -- "bin"  ; fi
 	$(JPP) -s "./src" -o "./bin" -DDEBUG=$(DEBUG) $(JPP_FLAGS)             \
 	    $$($(FIND) "./src" | $(GREP) -v '/\.java$$' | $(GREP) '\.java$$')
 
@@ -48,14 +50,14 @@ jpp:
 debug: jpp
 	(if (( $(DEBUG) < 1 )); then								\
 	     for file in $$($(FIND) "./bin" | $(GREP) -v '/\.java$$' | $(GREP) '\.java$$'); do	\
-	         $(MV) "$$file" "$${file}~";							\
+	         $(MV) -- "$$file" "$${file}~";							\
 	         $(SED) -e s/'\/\*debug\*\/'/'\/\/\*debug\*\/'/g < "$${file}~" > "$$file";	\
 	     done										\
 	 elif (( $(DEBUG) > 1 )); then								\
 	     for file in $$($(FIND) "./bin" | $(GREP) -v '/\.java$$' | $(GREP) '\.java$$'); do	\
 	         i=1;										\
 	         while (( $$i < $(DEBUG) )); do							\
-	             $(MV) "$$file" "$${file}~";						\
+	             $(MV) -- "$$file" "$${file}~";						\
 	             $(SED) -e s/'\/\/\*debug\*\/'/'\/\*debug\*\/'/g < "$${file}~" > "$$file";	\
 	             i=$$(( $$i + 1 ));								\
 	         done										\
@@ -102,19 +104,23 @@ jar: javac
 
 
 install:
-	$(MKDIR_P) "$(DESTDIR)$(PREFIX)$(BINDIR)"
-	$(INSTALL_M755) "$(PROGRAM)"     "$(DESTDIR)$(PREFIX)$(BINDIR)"
-	$(INSTALL_M755) "$(PROGRAM).jar" "$(DESTDIR)$(PREFIX)$(BINDIR)"
-
+	$(MKDIR_P) -- "$(DESTDIR)$(PREFIX)$(BINDIR)"
+	$(INSTALL_M755) "$(PROGRAM)"     -- "$(DESTDIR)$(PREFIX)$(BINDIR)"
+	$(INSTALL_M755) "$(PROGRAM).jar" -- "$(DESTDIR)$(PREFIX)$(BINDIR)"
+	$(MKDIR_P) -- "$(DESTDIR)$(PREFIX)$(DATADIR)/$(PROGRAM)"
+	$(INSTALL_M644) "share/"*.texinfo -- "$(DESTDIR)$(PREFIX)$(DATADIR)/$(PROGRAM)"
+	$(INSTALL_M644) "share/"LICENSE.* -- "$(DESTDIR)$(PREFIX)$(DATADIR)/$(PROGRAM)"
+	$(INSTALL_M644) "share/"*License  -- "$(DESTDIR)$(PREFIX)$(DATADIR)/$(PROGRAM)"
 
 uninstall:
-	$(UNLINK) "$(DESTDIR)$(PREFIX)$(BINDIR)/$(PROGRAM)"
-	$(UNLINK) "$(DESTDIR)$(PREFIX)$(BINDIR)/$(PROGRAM).jar"
+	$(UNLINK) -- "$(DESTDIR)$(PREFIX)$(BINDIR)/$(PROGRAM)"
+	$(UNLINK) -- "$(DESTDIR)$(PREFIX)$(BINDIR)/$(PROGRAM).jar"
+	$(RM_R) -- "$(DESTDIR)$(PREFIX)$(DATADIR)/$(PROGRAM)"
 
 
 clean:
-	if [ -d "bin" ];            then  $(RM_R) "bin"             ; fi
-	if [ -f "$(PROGRAM).jar" ]; then  $(RM)   "$(PROGRAM).jar"  ; fi
+	if [ -d "bin" ];            then  $(RM_R) -- "bin"             ; fi
+	if [ -f "$(PROGRAM).jar" ]; then  $(RM)   -- "$(PROGRAM).jar"  ; fi
 
 
 .PHONY: all clean
