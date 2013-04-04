@@ -7,7 +7,7 @@
 ## Private non-staging workspace
 ##################################
 
-/_/
+_/
 
 
 ## Temporary and backup files
@@ -15,7 +15,8 @@
 
 *~
 \#*\#
-.\#
+.\#*
+*.swo
 *.swp
 *.bak
 *.tmp
