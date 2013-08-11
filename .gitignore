@@ -1,1 +1,12 @@
-./share/gitignore
+_/
+bin/
+\#*\#
+.*
+!.git*
+*~
+*.bak
+*.swo
+*.swp
+*.jar
+*.class
+
