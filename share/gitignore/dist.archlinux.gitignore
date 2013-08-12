@@ -1,0 +1,4 @@
+## Package distribution (Arch Linux)
+/dist/archlinux/*/*
+!/dist/archlinux/*/PKGBUILD
+
