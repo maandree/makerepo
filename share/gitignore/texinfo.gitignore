@@ -1,0 +1,20 @@
+## Texinfo
+*.info
+*.pdf
+*.ps
+*.dvi
+*.aux
+*.cp
+*.cps
+*.fn
+*.ky
+*.log
+*.pg
+*.toc
+*.tp
+*.vr
+*.op
+*.ops
+*.pgs
+*.vrs
+

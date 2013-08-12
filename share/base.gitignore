@@ -1,0 +1,23 @@
+_/
+bin/
+obj/
+\#*\#
+.*
+!.git*
+.git
+*~
+*.swo
+*.swp
+*.bak
+*.install
+
+## Archives
+*.tar
+*.tgz
+*.tbz2
+*.txz
+*.gz
+*.bz2
+*.xz
+*.zip
+
