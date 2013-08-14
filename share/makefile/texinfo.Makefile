@@ -36,4 +36,5 @@ uninstall-info:
 clean: clean-texinfo
 clean-texinfo:
 	-rm -- *.{info,pdf,ps,dvi}{,.gz,.bz2,.xz}
+	-rm -- *.{aux,cp,cps,fn,ky,log,pg,pgs,toc,tp,vr,vrs}
 
